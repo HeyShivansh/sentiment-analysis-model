@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.pyc
+venv/
+
+# Data (DON'T upload huge datasets)
+data/raw/
+data/processed/
+
+# Models (optional: push later as release)
+models/*.pkl
+
+# Jupyter
+.ipynb_checkpoints/
+
+# OS
+.DS_Store
