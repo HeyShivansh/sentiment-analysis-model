@@ -26,19 +26,25 @@ def main():
 
     print("Vectorizing text...")
     vectorizer = TfidfVectorizer(
-        max_features=5000,
-        ngram_range=(1, 2)
-    )
+    max_features=20000,
+    ngram_range=(1, 3),
+    min_df=2)
+
 
     X_train_vec = vectorizer.fit_transform(X_train)
     X_val_vec = vectorizer.transform(X_val)
 
     print("Training model...")
-    model = LogisticRegression(max_iter=1000)
+    model = LogisticRegression(
+    max_iter=1000,
+    class_weight="balanced")
+
     model.fit(X_train_vec, y_train)
 
     print("Evaluating model...")
     preds = model.predict(X_val_vec)
+    probs = model.predict_proba(X_val_vec)
+
     acc = accuracy_score(y_val, preds)
 
     print(f"Validation Accuracy: {acc:.4f}")
@@ -49,7 +55,15 @@ def main():
     joblib.dump(vectorizer, "models/tfidf_vectorizer.pkl")
 
     print("Training complete!")
+    config = {
+    "max_features": 20000,
+    "ngram_range": "(1,3)",
+    "class_weight": "balanced",
+    "min_df": 2}
+
+    joblib.dump(config, "models/tfidf_config.pkl")
 
 
+    
 if __name__ == "__main__":
     main()
